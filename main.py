@@ -1,9 +1,9 @@
-from fs_tools.abs_path import get_absolute_path
-from fs_tools.csv_utils import read_csv
-from phonebook.full_name_parser import parse_full_name
-from phonebook.phone_parser import parse_phones
-from phonebook.duplicate_remover import unify_contacts
-from phonebook.phone_patterns import PHONE_PATTERNS
+from libs.fs_tools.abs_path import get_absolute_path
+from libs.fs_tools.csv_utils import read_csv
+from libs.phonebook.duplicate_remover import unify_contacts
+from libs.phonebook.full_name_parser import parse_full_name
+from libs.phonebook.phone_parser import parse_phones
+from libs.phonebook.phone_patterns import PHONE_PATTERNS
 
 if __name__ == '__main__':
     # Get the absolute path to the phonebook_raw.csv file.
