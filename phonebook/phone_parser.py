@@ -1,7 +1,7 @@
 import re
 
 
-def employer_phone_parser(data: list) -> list:
+def parse_phones(contacts: list, pattern: dict) -> list:
     """Parses phone numbers in a list of contacts and returns the updated list.
 
     This function iterates through each contact in the input list, extracting
@@ -11,16 +11,21 @@ def employer_phone_parser(data: list) -> list:
     list with updated phone numbers.
 
     Args:
-        data (list): A list of contacts, where each contact is a list.
+        contacts (list): A list of contacts, where each contact is a list.
+        pattern (dict): A dictionary containing the regular expression pattern
+            to match phone numbers.
 
     Returns:
         list: The input list with phone numbers formatted and updated.
     """
-    for contact in data:
-        phone = extract_phone_number(contact)
-        formatted_phone = format_phone_number(phone)
-        update_contact(contact, formatted_phone)
-    return data
+    return [
+        update_contact(
+            contact_list,
+            format_phone_number(
+                extract_phone_number(contact_list), pattern
+            )
+        ) for contact_list in contacts[1:]
+    ]
 
 
 def extract_phone_number(contact: list) -> str:
@@ -36,7 +41,7 @@ def extract_phone_number(contact: list) -> str:
     return contact[5]
 
 
-def format_phone_number(phone: str) -> str:
+def format_phone_number(phone: str, pattern: dict) -> str:
     """Formats the phone number into a single, readable format.
 
     This function removes all non-numeric characters from a phone number and
@@ -47,27 +52,29 @@ def format_phone_number(phone: str) -> str:
 
     Args:
         phone (str): The phone number to format.
+        pattern (dict): A dictionary containing the regular expression pattern
+            to match phone numbers.
 
     Returns:
         str: The formatted phone number.
     """
-    phone = re.sub(r'\D', '', phone)
+    phone: str = re.sub(r'\D', '', phone)
+    replacement: str = (
+        pattern['replace'] + (pattern['add'] if len(phone) > 11 else '')
+    )
 
-    pattern = r'^(\d)(\d{3})(\d{3})(\d{2})(\d{2})(\d{0,4})$'
-    replacement = r'+7(\2)\3-\4-\5' + (r' доб.\6' if len(phone) > 11 else '')
-
-    return re.sub(pattern, replacement, phone)
+    return re.sub(pattern['pattern'], replacement, phone)
 
 
-def update_contact(contact: list, phone: str) -> list:
+def update_contact(contacts: list, phone: str) -> list:
     """Updates the contact list with a new phone number.
 
     Args:
-        contact (list): A list representing a contact record.
+        contacts (list): A list representing a contact record.
         phone (str): The new phone number to update the contact record with.
 
     Returns:
         list: The updated contact record.
     """
-    contact[5] = phone
-    return contact
+    contacts[5] = phone
+    return contacts
