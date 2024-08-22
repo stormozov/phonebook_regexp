@@ -9,6 +9,6 @@ if __name__ == '__main__':
     phonebook: list[list[str]] = read_csv(phonebook_abs_path)
     table_header: list[str] = phonebook[0]
 
-    parsed_full_names: list = parse_full_name(phonebook[1:])
-    formatted_phones: list = employer_phone_parser(parsed_full_names)
-    merged_contacts: list = unify_contacts(formatted_phones)
+    parse_full_name(phonebook[1:])
+    employer_phone_parser(phonebook[1:])
+    merged_contacts: list = unify_contacts(phonebook[1:])

@@ -1,28 +1,35 @@
-def unify_contacts(data: list) -> list:
-    """Merges duplicate records in a list of contact information.
+import pandas as pd
 
-    The function takes a list of contact information and returns a list of
-    unique contact information with merged phone numbers and emails.
+
+def unify_contacts(data: list) -> list[list[str]]:
+    """Unify duplicate contacts in a list of contacts.
 
     Args:
-        data (list): A list of contact information, where each contact is a list
-            of strings.
+        data (list): A list of contacts, where each contact is a list.
 
     Returns:
-        list: A list of unique contact information with merged phone numbers
-            and emails.
+        list: A list of unique contacts, where each contact is a list.
+
+    Notes:
+        - The function groups the contacts by the first two columns
+          (name and surname) and aggregates the phone numbers and emails.
+        - The function uses pandas DataFrame to perform the grouping
+          and aggregation.
+        - The function returns a list of unique contacts.
     """
-    unique_contacts = {}
+    df = pd.DataFrame(data)
+    df_grouped: pd.DataFrame = (
+        df
+        .groupby([0, 1], sort=False)
+        .agg({
+            2: lambda x: x.fillna('').values[0],
+            3: lambda x: x.fillna('').values[0],
+            4: lambda x: ''.join(x),
+            5: lambda x: x.fillna('').values[0],
+            6: lambda x: x.fillna('').values[0],
+        })
+        .reset_index()
+    )
+    unique_contacts: list = df_grouped.values.tolist()
 
-    for contact in data:
-        name_and_surname = tuple(contact[:2])
-        existing_contact = unique_contacts.get(name_and_surname)
-
-        if existing_contact:
-            existing_contact[4] += contact[4]
-            existing_contact[5] += contact[5]
-            existing_contact[6] += contact[6]
-        else:
-            unique_contacts[name_and_surname] = contact
-
-    return list(unique_contacts.values())
+    return unique_contacts
