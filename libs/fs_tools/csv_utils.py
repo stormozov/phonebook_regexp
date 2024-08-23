@@ -1,8 +1,11 @@
 import csv
+import logging
 
 from ..validators import (
     validate_contacts_list, validate_csv_path, validate_encoding
 )
+
+logger = logging.getLogger(__name__)
 
 
 def read_csv(csv_path: str, encoding: str = 'utf-8') -> list:
@@ -22,6 +25,7 @@ def read_csv(csv_path: str, encoding: str = 'utf-8') -> list:
     """
     validate_csv_path(csv_path)
     if not validate_encoding(encoding):
+        logger.error(f'Invalid encoding: {encoding}')
         raise ValueError(f'Invalid encoding: {encoding}')
 
     csv_data = read_csv_file(csv_path, encoding)
@@ -46,7 +50,8 @@ def read_csv_file(csv_path: str, encoding: str = 'utf-8') -> str:
         with open(csv_path, encoding=encoding) as file:
             return file.read()
     except FileNotFoundError:
-        raise ValueError(f'Файл "{csv_path}" не существует')
+        logger.error(f'File "{csv_path}" not found')
+        raise ValueError(f'File "{csv_path}" not found')
 
 
 def parse_csv_data(csv_data: str) -> list:
@@ -105,4 +110,5 @@ def write_rows_to_csv(csv_path: str, rows: list, encoding: str = 'utf-8') \
             except csv.Error as e:
                 raise csv.Error(f'Error writing to CSV file: {e}')
     except IOError as e:
+        logger.error(f'Error writing to CSV file: {e}')
         raise IOError(f'Error writing to CSV file: {e}')

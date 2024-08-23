@@ -1,3 +1,9 @@
+import logging
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.ERROR)
+
+
 def validate_csv_path(csv_path: str) -> None:
     """Validates that the csv_path argument is a non-empty string.
 
@@ -8,7 +14,10 @@ def validate_csv_path(csv_path: str) -> None:
         ValueError: If csv_path is not a string or is empty.
     """
     if not isinstance(csv_path, str) or len(csv_path) == 0:
-        raise ValueError("csv_path must be a non-empty string")
+        logger.error(
+            'Ошибка валидации csv_path: csv_path must be a non-empty string'
+        )
+        raise ValueError('csv_path must be a non-empty string')
 
 
 def validate_contacts_list(contacts_list: list) -> None:
@@ -21,7 +30,8 @@ def validate_contacts_list(contacts_list: list) -> None:
         ValueError: If contacts_list is not a list or is empty.
     """
     if not isinstance(contacts_list, list) or len(contacts_list) == 0:
-        raise ValueError("contacts_list must be a non-empty list")
+        logger.error('contacts_list must be a non-empty list')
+        raise ValueError('contacts_list must be a non-empty list')
 
 
 def validate_encoding(encoding: str) -> bool:
@@ -35,7 +45,7 @@ def validate_encoding(encoding: str) -> bool:
     """
     try:
         # Try to encode a string using the input encoding
-        "test".encode(encoding)
+        'test'.encode(encoding)
         return True
     except LookupError:
         # If the encoding is not found, return False
@@ -53,8 +63,11 @@ def validate_path_segments(path_segments: list[str]) -> None:
         TypeError: If not all elements in path_segments are strings.
     """
     if not isinstance(path_segments, list):
-        raise ValueError("path_segments must be a list")
+        logger.error('path_segments must be a list')
+        raise ValueError('path_segments must be a list')
     if len(path_segments) == 0:
-        raise ValueError("path_segments must not be empty")
+        logger.error('path_segments must not be empty')
+        raise ValueError('path_segments must not be empty')
     if not all(isinstance(segment, str) for segment in path_segments):
-        raise TypeError("all elements in path_segments must be strings")
+        logger.error('all elements in path_segments must be strings')
+        raise TypeError('all elements in path_segments must be strings')

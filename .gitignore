@@ -160,3 +160,6 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
+!/formatted_data/
+!/formatted_data/phonebook_formatted.csv
+!/errors.txt

@@ -1,4 +1,7 @@
+import logging
 import re
+
+logger = logging.getLogger(__name__)
 
 
 def parse_phones(contacts: list, pattern: dict) -> list:
@@ -18,14 +21,27 @@ def parse_phones(contacts: list, pattern: dict) -> list:
     Returns:
         list: The input list with phone numbers formatted and updated.
     """
-    return [
-        update_contact(
-            contact_list,
-            format_phone_number(
-                extract_phone_number(contact_list), pattern
-            )
-        ) for contact_list in contacts[1:]
-    ]
+    try:
+        return [
+            update_contact(
+                contact_list,
+                format_phone_number(
+                    extract_phone_number(contact_list), pattern
+                )
+            ) for contact_list in contacts[1:]
+        ]
+    except KeyError as e:
+        logger.error(f"Missing key in pattern: {e}")
+        return []
+    except IndexError as e:
+        logger.error(f"Invalid index in contacts: {e}")
+        return []
+    except re.error as e:
+        logger.error(f"Invalid regular expression: {e}")
+        return []
+    except Exception as e:
+        logger.error(f"An error occurred: {e}")
+        return []
 
 
 def extract_phone_number(contact: list) -> str:

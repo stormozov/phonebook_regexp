@@ -1,9 +1,12 @@
 from libs.fs_tools import get_absolute_path, read_csv, write_csv, make_dir
+from log_start import logging_start
 from libs.phonebook import (
     unify_contacts, parse_full_name, parse_phones, PHONE_PATTERNS
 )
 
 if __name__ == '__main__':
+    # Start logging.
+    logging_start()
     # Create formatted data directory if it doesn't exist.
     make_dir('formatted_data')
     # Get absolute paths to input and output files.

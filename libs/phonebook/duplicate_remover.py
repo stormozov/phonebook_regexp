@@ -1,4 +1,8 @@
+import logging
+
 import pandas as pd
+
+logger = logging.getLogger(__name__)
 
 
 def unify_contacts(data: list) -> list[list[str]]:
@@ -17,19 +21,31 @@ def unify_contacts(data: list) -> list[list[str]]:
           and aggregation.
         - The function returns a list of unique contacts.
     """
-    df = pd.DataFrame(data)
-    df_grouped: pd.DataFrame = (
-        df
-        .groupby([0, 1], sort=False)
-        .agg({
-            2: lambda x: x.fillna('').values[0],
-            3: lambda x: x.fillna('').values[0],
-            4: lambda x: ''.join(x),
-            5: lambda x: x.fillna('').values[0],
-            6: lambda x: x.fillna('').values[0],
-        })
-        .reset_index()
-    )
-    unique_contacts: list = df_grouped.values.tolist()
+    try:
+        df = pd.DataFrame(data)
+        df_grouped: pd.DataFrame = (
+            df
+            .groupby([0, 1], sort=False)
+            .agg(
+                {
+                    2: lambda x: x.fillna('').values[0],
+                    3: lambda x: x.fillna('').values[0],
+                    4: lambda x: ''.join(x),
+                    5: lambda x: x.fillna('').values[0],
+                    6: lambda x: x.fillna('').values[0],
+                }
+            )
+            .reset_index()
+        )
+        unique_contacts: list = df_grouped.values.tolist()
+    except KeyError as e:
+        logger.error(f"Ошибка ключа: {e}")
+        return []
+    except TypeError as e:
+        logger.error(f"Ошибка типа: {e}")
+        return []
+    except ValueError as e:
+        logger.error(f"Ошибка значения: {e}")
+        return []
 
     return unique_contacts

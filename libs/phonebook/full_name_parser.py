@@ -1,3 +1,8 @@
+import logging
+
+logger = logging.getLogger(__name__)
+
+
 def parse_full_name(data):
     """ Parses full names into first name, father name and last names.
 
@@ -10,11 +15,21 @@ def parse_full_name(data):
     Returns:
         list[list[str]]: The data with parsed full names.
     """
-    for row in data:
-        full_name = join_full_name(row)
-        row[:3] = split_full_name(full_name)
+    try:
+        for row in data:
+            full_name = join_full_name(row)
+            row[:3] = split_full_name(full_name)
 
-    return data
+        return data
+    except ValueError as e:
+        logger.error(f'Invalid data format: {e}')
+        return None
+    except IndexError as e:
+        logger.error(f'Invalid data index: {e}')
+        return None
+    except Exception as e:
+        logger.error(f'An error occurred: {e}')
+        return None
 
 
 def join_full_name(row: list[str]) -> str:
