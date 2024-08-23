@@ -1,6 +1,6 @@
 import os
 
-from ..validators.fs_validate import validate_path_segments
+from ..validators import validate_path_segments
 
 
 def get_absolute_path(path_segments: list[str]) -> str:

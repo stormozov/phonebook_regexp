@@ -46,7 +46,16 @@ def validate_encoding(encoding: str) -> bool:
         return False
 
 
-def validate_path_segments(path_segments):
+def validate_path_segments(path_segments: list[str]) -> None:
+    """Validates that the path_segments argument is a non-empty list of strings.
+
+    Args:
+        path_segments (list[str]): The list of path segments to validators.
+
+    Raises:
+        ValueError: If path_segments is not a list or is empty.
+        TypeError: If not all elements in path_segments are strings.
+    """
     if not isinstance(path_segments, list):
         raise ValueError("path_segments must be a list")
     if len(path_segments) == 0:

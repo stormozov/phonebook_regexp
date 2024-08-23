@@ -1,6 +1,6 @@
 import csv
 
-from ..validators.fs_validate import (
+from ..validators import (
     validate_contacts_list, validate_csv_path, validate_encoding
 )
 
