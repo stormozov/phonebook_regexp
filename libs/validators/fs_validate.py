@@ -9,8 +9,6 @@ def validate_csv_path(csv_path: str) -> None:
     """
     if not isinstance(csv_path, str) or len(csv_path) == 0:
         raise ValueError("csv_path must be a non-empty string")
-    if not isinstance(csv_path, str) or len(csv_path) == 0:
-        raise ValueError("csv_path must be a non-empty string")
 
 
 def validate_contacts_list(contacts_list: list) -> None:
@@ -22,8 +20,6 @@ def validate_contacts_list(contacts_list: list) -> None:
     Raises:
         ValueError: If contacts_list is not a list or is empty.
     """
-    if not isinstance(contacts_list, list) or len(contacts_list) == 0:
-        raise ValueError("contacts_list must be a non-empty list")
     if not isinstance(contacts_list, list) or len(contacts_list) == 0:
         raise ValueError("contacts_list must be a non-empty list")
 
