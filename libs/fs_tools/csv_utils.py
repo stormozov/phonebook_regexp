@@ -97,7 +97,7 @@ def write_rows_to_csv(csv_path: str, rows: list, encoding: str = 'utf-8') \
         csv.Error: If an error occurs while writing to the CSV file.
     """
     try:
-        with open(csv_path, 'w', encoding=encoding) as f:
+        with open(csv_path, 'w', encoding=encoding, newline='') as f:
             datawriter = csv.writer(f, delimiter=',')
 
             try:
